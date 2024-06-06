@@ -127,7 +127,7 @@ jobs:
                   sleep 300
 
             - name: Re-trigger workflow
-              run: gh workflow run checker.yaml
+              run: gh workflow run release.yml
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   GH_REPO: ${{ github.repository }}
