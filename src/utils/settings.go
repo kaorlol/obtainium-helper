@@ -12,17 +12,19 @@ type Settings struct {
 }
 
 type Download struct {
-	Name       string   `json:"name"`
-	Type       string   `json:"type"`
-	Version    Version  `json:"version"`
-	URL        string   `json:"url"`
-	Patterns   []string `json:"patterns"`
-	UrlEncoded bool     `json:"url_encoded"`
+	Name       string     `json:"name"`
+	Type       string     `json:"type"`
+	Identifier Identifier `json:"identifier"`
+	URL        string     `json:"url"`
+	Patterns   []string   `json:"patterns"`
+	UrlEncoded bool       `json:"url_encoded"`
 }
 
-type Version struct {
-	Latest  string `json:"latest"`
-	Pattern string `json:"pattern"`
+type Identifier struct {
+	Latest         string `json:"latest"`
+	EnumLimit      int    `json:"enum_limit"`
+	IncrementLimit int    `json:"increment_limit"`
+	Pattern        string `json:"pattern"`
 }
 
 func GetSettings() Settings {
@@ -34,10 +36,10 @@ func GetSettings() Settings {
 	return settings
 }
 
-func UpdateApp(settings Settings, name, appName, version string) Settings {
+func UpdateApp(settings Settings, name, appName, identifier string) Settings {
 	download := settings.ToDownload[name]
 	download.Name = appName
-	download.Version.Latest = version
+	download.Identifier.Latest = identifier
 	settings.ToDownload[name] = download
 
 	file := filepath.Join("settings.json")
