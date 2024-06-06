@@ -4,7 +4,6 @@ on:
     workflow_dispatch:
 
 env:
-    SUCCESS: "failed"
     APK_PATH: null
 
 jobs:
@@ -23,13 +22,12 @@ jobs:
             - name: Set Environment Variables
               run: |
                   echo "APK_PATH=$(ls -S out/*.apk | head -n 1)" >> $GITHUB_ENV
-                  if [[ "${{ steps.run-main.outcome }}" == "success" ]]; then
-                      echo "STATUS=success" >> $GITHUB_ENV
+                  if [[ "${{ steps.run-main.outcome }}" != "success" ]]; then
+                      exit 1
                   fi
 
             - name: Get Apk Info
               id: apk-info
-              if: ${{ env.SUCCESS == 'success' }}
               uses: hkusu/apk-info-action@v1
               with:
                   apk-path: ${{ env.APK_PATH }}
@@ -47,7 +45,6 @@ jobs:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Create Release
-              if: ${{ env.SUCCESS == 'success' }}
               uses: softprops/action-gh-release@v1
               with:
                   files: ${{ env.APK_PATH }}
