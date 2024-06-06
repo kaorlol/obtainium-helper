@@ -1,0 +1,126 @@
+name: release
+
+on:
+    workflow_dispatch:
+
+env:
+    STATUS: false
+    APK_PATH: null
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Run Main.go
+              id: run-main
+              run: |
+                  go run ./src/main.go --token="${{ secrets.GITHUB_TOKEN }}"
+
+            - name: Set Environment Variables
+              run: |
+                  echo "APK_PATH=$(ls -S out/*.apk | head -n 1)" >> $GITHUB_ENV
+                  if [[ "${{ steps.run-main.outcome }}" != "success" ]]; then
+                      echo "STATUS=true" >> $GITHUB_ENV
+                  fi
+
+            - name: Get Apk Info
+              id: apk-info
+              if: ${{ env.STATUS == false }}
+              uses: hkusu/apk-info-action@v1
+              with:
+                  apk-path: ${{ env.APK_PATH }}
+
+            # - name: Check Release
+            #   id: check-release
+            #   if: ${{ env.STATUS == false }}
+            #   uses: actions/github-script@v4
+            #   with:
+            #       script: |
+            #           function levenshteinDistance(a, b) {
+            #               const matrix = [];
+
+            #               let i;
+            #               for (i = 0; i <= b.length; i++) {
+            #                   matrix[i] = [i];
+            #               }
+
+            #               let j;
+            #               for (j = 0; j <= a.length; j++) {
+            #                   matrix[0][j] = j;
+            #               }
+
+            #               for (i = 1; i <= b.length; i++) {
+            #                   for (j = 1; j <= a.length; j++) {
+            #                       if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            #                           matrix[i][j] = matrix[i - 1][j - 1];
+            #                       } else {
+            #                           matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
+            #                       }
+            #                   }
+            #               }
+
+            #               return matrix[b.length][a.length];
+            #           };
+
+            #           const { data: releases } = await github.repos.listReleases({
+            #               owner: context.repo.owner,
+            #               repo: context.repo.repo,
+            #           });
+
+            #           const similarReleases = releases.filter((release) => {
+            #               return levenshteinDistance(release.name, '${{ steps.apk-info.outputs.application-name }}') <= 3;
+            #           });
+
+            #           if (similarReleases.length > 0) {
+            #               const release = similarReleases[0];
+            #               console.log(`Release ${release.name} is similar to ${${{ steps.apk-info.outputs.application-name }}}, removing release...`);
+            #               await github.repos.deleteRelease({
+            #                   owner: context.repo.owner,
+            #                   repo: context.repo.repo,
+            #                   release_id: release.id,
+            #               });
+            #           }
+
+            - name: Commit Changes
+              run: |
+                  git config --global user.email "apk-artifacts-downloader@github.com"
+                  git config --global user.name "${{ github.repository_owner }}"
+                  git add .
+                  git commit -m "Update ${{ steps.apk-info.outputs.application-name }} to latest version"
+
+            - name: Push Changes
+              uses: ad-m/github-push-action@master
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Create Release
+              if: ${{ env.STATUS == false }}
+              uses: softprops/action-gh-release@v1
+              with:
+                  files: ${{ env.APK_PATH }}
+                  tag_name: ${{ steps.apk-info.outputs.version-name }}
+                  name: ${{ steps.apk-info.outputs.application-name }}
+                  body: ${{ steps.apk-info.outputs.version-name }}
+
+    rerun-workflow:
+        name: Re-run workflow
+        needs: release
+        if: success() || failure()
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Wait for 5 minutes
+              run: |
+                  sleep 300
+
+            - name: Re-trigger workflow
+              run: gh workflow run checker.yaml
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GH_REPO: ${{ github.repository }}
