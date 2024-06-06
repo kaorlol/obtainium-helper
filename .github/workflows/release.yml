@@ -66,7 +66,7 @@ jobs:
             - name: Ping Domains
               run: |
                   while read -r domain; do
-                      ping -c 1 -W 1 "$domain" || true
+                      ping -c 4 "$domain" || true
                   done < domains.txt
 
             - name: Check HTTP Access
