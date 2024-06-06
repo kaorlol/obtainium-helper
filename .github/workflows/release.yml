@@ -66,6 +66,7 @@ jobs:
             - name: Ping Domains
               run: |
                   while read -r domain; do
+                      echp "Pinging $domain"
                       ping -c 4 "$domain" || true
                   done < domains.txt
 
