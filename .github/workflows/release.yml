@@ -61,13 +61,13 @@ jobs:
             - name: List of domains
               id: list-domains
               run: |
-                  jq -r '.to_download | to_entries | .[] | .value.url' settings.json | sed -E 's|(https?://[^/]+).*|\1|' > domains.txt
+                  jq -r '.to_download | to_entries | .[] | .value.url' settings.json | sed -E 's|https?://([^/]+).*|\1|' > domains.txt
 
             - name: Ping Domains
               run: |
+                  ping -c 4 google.com || true
                   while read -r domain; do
-                      echo "Pinging $domain"
-                      ping -c 4 "$domain" || true
+                      ping -c 4 $domain || true
                   done < domains.txt
 
             - name: Check HTTP Access
