@@ -36,7 +36,8 @@ More info on some confusing parts of the settings.json file.
 #### Artifact:
 
 `url` - you should go to the workflow that its running and filter them by what branch you want, then use that link. Link example: `https://github.com/rebelonion/Dantotsu/actions/workflows/beta.yml?query=branch%3Adev`\
-`pattern` - you should just use this pattern for now: `\\/([a-zA-Z0-9]+)\\.zip` because there is now way to get the file version without downloading the whole thing, which would use API calls and would be slow.
+`pattern` - you should just use this pattern for now: `\\/([a-zA-Z0-9]+)\\.zip` because there is now way to get the file version without downloading the whole thing, which would use API calls and would be slow.\
+`patterns` - this should just be the name of the APK file you want to extract from the zip. There should only be one file at the moment because we don't support multiple files yet.
 
 #### Other:
 
