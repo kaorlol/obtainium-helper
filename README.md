@@ -20,17 +20,26 @@ This is a helper template for [Obtainium](https://github.com/ImranR98/Obtainium)
 -   `wait_time` - This is the time in seconds that the script will wait before re-checking for updates.
 
 ### More details:
+
 More info on some confusing parts of the settings.json file.
 
 #### Enumeration:
-`enumeration`: so far only increments the version.\
-`enum_limit` is how many times it will be incremented. For example, if the latest version is 1.0 and the enum_limit is 500, it will increment to 1.500.\
-`increment_limit` is how much it will increment by. For example, if the latest version is 1.0 and the increment_limit is 999, it will increment to 1.999.
+
+`enumeration` - so far only increments the version.\
+`enum_limit` - how many times it will be incremented. For example, if the latest version is 1.0 and the enum_limit is 500, it will increment to 1.500.\
+`increment_limit` - how much it will increment by. For example, if the latest version is 1.0 and the increment_limit is 999, it will increment to 1.999.
 
 #### Web:
-`patterns` is a list of patterns to use to get the APK. So if you set `url` to a direct APK link you don't need to add patterns. But if there is a website that contains a button or a link somewhere you can add a regex pattern to get the link. The reason why its an array is because if you need to get a link inside the link that the pattern before-hand got, you can add another pattern to get that link.
+
+`patterns` - a list of patterns to use to get the APK. So if you set `url` to a direct APK link you don't need to add patterns. But if there is a website that contains a button or a link somewhere you can add a regex pattern to get the link. The reason why its an array is because if you need to get a link inside the link that the pattern before-hand got, you can add another pattern to get that link.
+
+#### Artifact:
+
+`url` - you should go to the workflow that its running and filter them by what branch you want, then use that link. Link example: `https://github.com/rebelonion/Dantotsu/actions/workflows/beta.yml?query=branch%3Adev`\
+`pattern` - you should just use this pattern for now: `\\/([a-zA-Z0-9]+)\\.zip` because there is now way to get the file version without downloading the whole thing, which would use API calls and would be slow.
 
 #### Other:
+
 `url_encoded` is if the URL is encoded. For example, if the URL a bunch of weird symbols that start with `%` then you need to set this to `true`.\
 `agent` is the user agent to use when downloading the APK. This is optional and only needed if the website requires a user agent to download the APK.
 
@@ -84,4 +93,3 @@ More info on some confusing parts of the settings.json file.
 	"wait_time": 15
 }
 ```
-
