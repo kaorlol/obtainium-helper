@@ -40,7 +40,7 @@ func Request(url string, agent *string) (*http.Response, error) {
 }
 
 func DownloadFile(fileURL string, app Download) (string, string, error) {
-	resp, err := Request(fileURL, nil)
+	resp, err := Request(fileURL, app.Agent)
 	if err != nil {
 		return "", "", err
 	}
@@ -70,7 +70,7 @@ func DownloadFile(fileURL string, app Download) (string, string, error) {
 }
 
 func downloadFromZip(fileURL string, app Download) (string, string, error) {
-	resp, err := Request(fileURL, nil)
+	resp, err := Request(fileURL, app.Agent)
 	if err != nil {
 		return "", "", err
 	}
