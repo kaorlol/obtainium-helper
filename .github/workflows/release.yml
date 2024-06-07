@@ -67,8 +67,11 @@ jobs:
               id: check-release
               run: |
                   release_id=$(gh release list --limit 1 | grep -oP '^\d+')
+                  echo "Release ID: $release_id"
                   release_title=$(gh release view $release_id --json name --jq '.name')
+                  echo "Release Title: $release_title"
                   if [[ $release_title == "\"${{ steps.apk-info.outputs.application-name }}\"" ]]; then
+                      echo "Duplicate release found"
                       gh release delete $release_id
                       git tag -d ${{ steps.apk-info.outputs.version-name }}
                       git push origin :refs/tags/${{ steps.apk-info.outputs.version-name }}
