@@ -2,6 +2,7 @@ package utils
 
 import (
 	"archive/zip"
+	"crypto/tls"
 	"fmt"
 	"io"
 	"net/http"
@@ -13,7 +14,13 @@ import (
 )
 
 func Request(url string) (*http.Response, error) {
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
+
+	resp, err := client.Get(url)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		if err == nil {
 			err = fmt.Errorf("unexpected status code %d", resp.StatusCode)

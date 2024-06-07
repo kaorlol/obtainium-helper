@@ -77,7 +77,7 @@ func GetArtifacts(url string, lastRunId string) (string, error) {
 
 	artifact := artifacts.Artifacts[0]
 	if artifact.GetExpired() {
-		return "", fmt.Errorf("artifact expired")
+		return "", nil
 	}
 
 	artifactDownloadUrl, _, err := client.Actions.DownloadArtifact(context.Background(), owner, repo, artifact.GetID(), 0)

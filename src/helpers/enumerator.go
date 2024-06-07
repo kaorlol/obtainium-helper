@@ -83,7 +83,6 @@ func Enumerate(ctx context.Context, download utils.Download) (string, error) {
 
 					newIdentifier := identifierToString(currentIdentifier)
 					resp, err := utils.Request(fmt.Sprintf("%s%s.apk", download.URL, newIdentifier))
-					println(fmt.Sprintf("%s%s.apk", download.URL, newIdentifier))
 					if err != nil {
 						continue
 					}
