@@ -72,6 +72,7 @@ jobs:
 
             - name: Check HTTP Access
               run: |
+                  curl -I "https://google.com" || true
                   while read -r domain; do
                       curl -I "$domain" || true
                   done < domains.txt
