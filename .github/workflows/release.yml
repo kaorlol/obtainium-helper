@@ -52,23 +52,23 @@ jobs:
               with:
                   apk-path: ${{ env.APK_PATH }}
 
-            - name: Check Existing Release
-              id: check-release
-              run: |
-                  RELEASE_ID=$(gh release list | grep "${{ steps.apk-info.outputs.version-name }}" | awk '{print $3}')
-                  if [ -n "$RELEASE_ID" ]; then
-                    echo "RELEASE_ID=$RELEASE_ID" >> $GITHUB_ENV
-                  fi
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            # - name: Check Existing Release
+            #   id: check-release
+            #   run: |
+            #       RELEASE_ID=$(gh release list | grep "${{ steps.apk-info.outputs.version-name }}" | awk '{print $3}')
+            #       if [ -n "$RELEASE_ID" ]; then
+            #         echo "RELEASE_ID=$RELEASE_ID" >> $GITHUB_ENV
+            #       fi
+            #   env:
+            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Delete Existing Release
-              if: env.RELEASE_ID
-              run: |
-                  gh release delete "${{ env.RELEASE_ID }}" -y
-                  gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/${{ steps.apk-info.outputs.version-name }}"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            # - name: Delete Existing Release
+            #   if: env.RELEASE_ID
+            #   run: |
+            #       gh release delete "${{ env.RELEASE_ID }}" -y
+            #       gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/${{ steps.apk-info.outputs.version-name }}"
+            #   env:
+            #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Commit Changes
               run: |
