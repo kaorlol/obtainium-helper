@@ -73,6 +73,8 @@ jobs:
                       git tag -d ${{ steps.apk-info.outputs.version-name }}
                       git push origin :refs/tags/${{ steps.apk-info.outputs.version-name }}
                   fi
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Create Release
               uses: softprops/action-gh-release@v1
