@@ -41,7 +41,7 @@ func checkForUpdate(settings utils.Settings, waitTime int) {
 			}
 
 			helpers.SetClient(token)
-			fileURL, err = helpers.GetArtifacts(download.URL)
+			fileURL, err = helpers.GetArtifact(download.URL, download)
 		}
 
 		if err != nil {

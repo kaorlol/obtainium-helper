@@ -3,7 +3,10 @@ package helpers
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
+
+	"obtainium-helper/src/utils"
 
 	"github.com/google/go-github/v61/github"
 	"golang.org/x/oauth2"
@@ -57,21 +60,18 @@ func getWorkflowLatestRun(url string) (int64, error) {
 	return workflowRuns.WorkflowRuns[0].GetID(), nil
 }
 
-func GetArtifacts(url string) (string, error) {
+func GetArtifact(url string, app utils.Download) (string, error) {
 	runID, err := getWorkflowLatestRun(url)
 	if err != nil {
 		return "", err
 	}
 
-	artifacts, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), owner, repo, runID, &github.ListOptions{
-		PerPage: 1,
-	})
-
+	artifacts, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), owner, repo, runID, &github.ListOptions{})
 	if _, ok := err.(*github.RateLimitError); ok {
 		return "", fmt.Errorf("hit rate limit")
 	}
 
-	artifact := artifacts.Artifacts[0]
+	artifact := getArtifactFromPattern(app.Patterns[0], artifacts.Artifacts)
 	if artifact.GetExpired() {
 		return "", nil
 	}
@@ -82,4 +82,14 @@ func GetArtifacts(url string) (string, error) {
 	}
 
 	return artifactDownloadUrl.String(), nil
+}
+
+func getArtifactFromPattern(pattern string, artifacts []*github.Artifact) *github.Artifact {
+	for _, artifact := range artifacts {
+		if match, _ := regexp.MatchString(pattern, artifact.GetName()); match {
+			return artifact
+		}
+	}
+
+	return nil
 }

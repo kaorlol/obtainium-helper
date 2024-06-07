@@ -88,7 +88,7 @@ func downloadFromZip(fileURL string, app Download) (string, string, error) {
 	}
 	defer r.Close()
 
-	biggestApk := findApk(r.File, app.Patterns[0])
+	biggestApk := findApk(r.File, app.Patterns[1])
 	if biggestApk == nil {
 		return "", "", fmt.Errorf("no apk file found in zip")
 	}
