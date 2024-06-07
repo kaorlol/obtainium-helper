@@ -87,4 +87,3 @@ func GetArtifacts(url string, lastRunId string) (string, error) {
 
 	return artifactDownloadUrl.String(), nil
 }
-
