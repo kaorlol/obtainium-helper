@@ -13,7 +13,7 @@
 			"name": "app-google-alpha.apk",
 			"type": "artifact",
 			"identifier": {
-				"latest": "0",
+				"latest": "f0f2d2aba6b71f9649c29cb455b4953be0459fa879643ab4f988b56bc290c564",
 				"enum_limit": 0,
 				"increment_limit": 0,
 				"pattern": "\\/([a-zA-Z0-9]+)\\.zip"
@@ -35,7 +35,7 @@
 		"TikTok Plugin": {
 			"name": "1.41_plugin.apk",
 			"type": "web",
-			"identifier": { "latest": "1.41", "enum_limit": 0, "increment_limit": 0, "pattern": "\\d+(?:\\.\\d+)+" },
+			"identifier": { "latest": "1.40", "enum_limit": 0, "increment_limit": 0, "pattern": "\\d+(?:\\.\\d+)+" },
 			"url": "https://tiktokmodcloud.com/ttplugin.html",
 			"agent": null,
 			"patterns": ["https://oxy\\.cloud\\/[^\\s\"']+", "https://loader\\.oxy\\.st\\/get\\/[^\\s\"']+"],
