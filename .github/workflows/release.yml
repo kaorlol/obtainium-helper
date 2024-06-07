@@ -5,6 +5,7 @@ on:
 
 env:
     APK_PATH: null
+    RELEASE_ID: null
 
 jobs:
     release:
@@ -51,6 +52,24 @@ jobs:
               with:
                   apk-path: ${{ env.APK_PATH }}
 
+            - name: Check Existing Release
+              id: check-release
+              run: |
+                  RELEASE_ID=$(gh release list | grep "${{ steps.apk-info.outputs.version-name }}" | awk '{print $3}')
+                  if [ -n "$RELEASE_ID" ]; then
+                    echo "RELEASE_ID=$RELEASE_ID" >> $GITHUB_ENV
+                  fi
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Delete Existing Release
+              if: env.RELEASE_ID
+              run: |
+                  gh release delete "${{ env.RELEASE_ID }}" -y
+                  gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/${{ steps.apk-info.outputs.version-name }}"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
             - name: Commit Changes
               run: |
                   git config --global user.email "apk-artifacts-downloader@github.com"
@@ -62,22 +81,6 @@ jobs:
               uses: ad-m/github-push-action@master
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-
-            - name: Check For Duplicate Release
-              id: check-release
-              run: |
-                  release_id=$(gh release list --limit 1 | grep -oP '^\d+')
-                  echo "Release ID: $release_id"
-                  release_title=$(gh release view $release_id --json name --jq '.name')
-                  echo "Release Title: $release_title"
-                  if [[ $release_title == "\"${{ steps.apk-info.outputs.application-name }}\"" ]]; then
-                      echo "Duplicate release found"
-                      gh release delete $release_id
-                      git tag -d ${{ steps.apk-info.outputs.version-name }}
-                      git push origin :refs/tags/${{ steps.apk-info.outputs.version-name }}
-                  fi
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Create Release
               uses: softprops/action-gh-release@v1
