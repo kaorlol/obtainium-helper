@@ -13,14 +13,23 @@ import (
 	"strings"
 )
 
-func Request(url string) (*http.Response, error) {
+func Request(url string, agent *string) (*http.Response, error) {
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
 	}
 
-	resp, err := client.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %v", err)
+	}
+
+	if agent != nil {
+		req.Header.Set("User-Agent", *agent)
+	}
+
+	resp, err := client.Do(req)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		if err == nil {
 			err = fmt.Errorf("unexpected status code %d", resp.StatusCode)
@@ -31,7 +40,7 @@ func Request(url string) (*http.Response, error) {
 }
 
 func DownloadFile(fileURL string, app Download) (string, string, error) {
-	resp, err := Request(fileURL)
+	resp, err := Request(fileURL, nil)
 	if err != nil {
 		return "", "", err
 	}
@@ -61,7 +70,7 @@ func DownloadFile(fileURL string, app Download) (string, string, error) {
 }
 
 func downloadFromZip(fileURL string, app Download) (string, string, error) {
-	resp, err := Request(fileURL)
+	resp, err := Request(fileURL, nil)
 	if err != nil {
 		return "", "", err
 	}

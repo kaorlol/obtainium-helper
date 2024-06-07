@@ -16,6 +16,7 @@ type Download struct {
 	Type       string     `json:"type"`
 	Identifier Identifier `json:"identifier"`
 	URL        string     `json:"url"`
+	Agent      *string    `json:"agent"`
 	Patterns   []string   `json:"patterns"`
 	UrlEncoded bool       `json:"url_encoded"`
 }

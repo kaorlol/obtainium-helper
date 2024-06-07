@@ -44,13 +44,13 @@ func incrementIdentifierBy(identifier []int, count, limit int) {
 	}
 }
 
-func Enumerate(ctx context.Context, download utils.Download) (string, error) {
-	initialIdentifier, err := getSplitIdentifier(download.Identifier)
+func Enumerate(ctx context.Context, app utils.Download) (string, error) {
+	initialIdentifier, err := getSplitIdentifier(app.Identifier)
 	if err != nil {
 		return "", err
 	}
 
-	numWorkers := download.Identifier.EnumLimit / 10
+	numWorkers := app.Identifier.EnumLimit / 10
 	results := make(chan string, numWorkers)
 	var wg sync.WaitGroup
 	var identifierCounter int
@@ -69,7 +69,7 @@ func Enumerate(ctx context.Context, download utils.Download) (string, error) {
 					return
 				default:
 					identifierMutex.Lock()
-					if identifierCounter >= download.Identifier.EnumLimit {
+					if identifierCounter >= app.Identifier.EnumLimit {
 						identifierMutex.Unlock()
 						cancel()
 						return
@@ -77,12 +77,12 @@ func Enumerate(ctx context.Context, download utils.Download) (string, error) {
 
 					currentIdentifier := make([]int, len(initialIdentifier))
 					copy(currentIdentifier, initialIdentifier)
-					incrementIdentifierBy(currentIdentifier, identifierCounter, download.Identifier.IncrementLimit)
+					incrementIdentifierBy(currentIdentifier, identifierCounter, app.Identifier.IncrementLimit)
 					identifierCounter++
 					identifierMutex.Unlock()
 
 					newIdentifier := identifierToString(currentIdentifier)
-					resp, err := utils.Request(fmt.Sprintf("%s%s.apk", download.URL, newIdentifier))
+					resp, err := utils.Request(fmt.Sprintf("%s%s.apk", app.URL, newIdentifier), app.Agent)
 					if err != nil {
 						continue
 					}
@@ -110,6 +110,6 @@ func Enumerate(ctx context.Context, download utils.Download) (string, error) {
 		return "", nil
 	}
 
-	url := fmt.Sprintf("%s%s.apk", download.URL, foundIdentifier)
+	url := fmt.Sprintf("%s%s.apk", app.URL, foundIdentifier)
 	return url, nil
 }

@@ -57,14 +57,10 @@ func getWorkflowLatestRun(url string) (int64, error) {
 	return workflowRuns.WorkflowRuns[0].GetID(), nil
 }
 
-func GetArtifacts(url string, lastRunId string) (string, error) {
+func GetArtifacts(url string) (string, error) {
 	runID, err := getWorkflowLatestRun(url)
 	if err != nil {
 		return "", err
-	}
-
-	if lastRunId == fmt.Sprintf("%d", runID) {
-		return "", nil
 	}
 
 	artifacts, _, err := client.Actions.ListWorkflowRunArtifacts(context.Background(), owner, repo, runID, &github.ListOptions{

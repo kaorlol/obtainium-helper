@@ -5,6 +5,7 @@
 			"type": "enumeration",
 			"identifier": { "latest": "2.611", "enum_limit": 500, "increment_limit": 999, "pattern": "\\d+(?:\\.\\d+)+" },
 			"url": "https://cdn.codex.lol/public/Codex_",
+			"agent": "Codex Android",
 			"patterns": null,
 			"url_encoded": false
 		},
@@ -18,6 +19,7 @@
 				"pattern": "\\/([a-zA-Z0-9]+)\\.zip"
 			},
 			"url": "https://github.com/rebelonion/Dantotsu/actions/workflows/beta.yml?query=branch%3Adev",
+			"agent": null,
 			"patterns": ["app-google-alpha.apk"],
 			"url_encoded": false
 		},
@@ -26,6 +28,7 @@
 			"type": "web",
 			"identifier": { "latest": "34.9.5", "enum_limit": 0, "increment_limit": 0, "pattern": "\\/(\\d+(?:\\.\\d+)+)" },
 			"url": "https://store.kde.org/p/1515346/loadFiles",
+			"agent": null,
 			"patterns": ["https://files04\\.pling\\.com/api/files/download/j/[^/]+/\\d+(?:\\.\\d+)+-universal\\.apk"],
 			"url_encoded": true
 		},
@@ -34,6 +37,7 @@
 			"type": "web",
 			"identifier": { "latest": "1.41", "enum_limit": 0, "increment_limit": 0, "pattern": "\\d+(?:\\.\\d+)+" },
 			"url": "https://tiktokmodcloud.com/ttplugin.html",
+			"agent": null,
 			"patterns": ["https://oxy\\.cloud\\/[^\\s\"']+", "https://loader\\.oxy\\.st\\/get\\/[^\\s\"']+"],
 			"url_encoded": false
 		}

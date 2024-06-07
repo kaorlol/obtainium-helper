@@ -9,8 +9,8 @@ import (
 	"obtainium-helper/src/utils"
 )
 
-func fetchText(url string) (string, error) {
-	resp, err := utils.Request(url)
+func fetchText(url string, agent *string) (string, error) {
+	resp, err := utils.Request(url, agent)
 	if err != nil {
 		return "", err
 	}
@@ -30,12 +30,12 @@ func findPatternInText(text string, pattern string) (string, bool) {
 	return match, match != ""
 }
 
-func FetchURL(URL string, patterns []string, urlEncoded bool) (string, error) {
+func FetchURL(URL string, patterns []string, urlEncoded bool, agent *string) (string, error) {
 	if len(patterns) == 0 {
 		return URL, nil
 	}
 
-	text, err := fetchText(URL)
+	text, err := fetchText(URL, agent)
 	if err != nil {
 		return "", err
 	}
@@ -56,5 +56,5 @@ func FetchURL(URL string, patterns []string, urlEncoded bool) (string, error) {
 		return match, nil
 	}
 
-	return FetchURL(match, patterns[1:], urlEncoded)
+	return FetchURL(match, patterns[1:], urlEncoded, agent)
 }
