@@ -62,7 +62,7 @@ jobs:
 
             - name: Find matching release
               run: |
-                  app_name=${{ steps.apk-info.outputs.application-name }}
+                  app_name="${{ steps.apk-info.outputs.application-name }}"
                   release_data=$(jq -r --arg app_name "$app_name" '.[] | select(.name == $app_name)' releases.json)
                   echo "RELEASE_ID=$(echo "$release_data" | jq -r '.id')" >> $GITHUB_ENV
                   echo "TAG_NAME=$(echo "$release_data" | jq -r '.tag_name')" >> $GITHUB_ENV
