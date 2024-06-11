@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"net/url"
-	"regexp"
 
 	"obtainium-helper/src/utils"
 )
@@ -24,23 +23,6 @@ func fetchText(url string, agent *string) (string, error) {
 	return string(body), nil
 }
 
-func findAllPatternsInText(text string, pattern string) []string {
-	re := regexp.MustCompile(pattern)
-	matches := re.FindAllString(text, -1)
-	return matches
-}
-
-func extractIdentifier(url, pattern string) string {
-	matches := regexp.MustCompile(pattern).FindStringSubmatch(url)
-	if len(matches) > 1 {
-		return matches[1]
-	}
-	if len(matches) > 0 {
-		return matches[0]
-	}
-	return ""
-}
-
 func FetchURL(URL string, patterns []string, app utils.Download) (string, error) {
 	if len(patterns) == 0 {
 		return URL, nil
@@ -58,20 +40,20 @@ func FetchURL(URL string, patterns []string, app utils.Download) (string, error)
 		}
 	}
 
-	matches := findAllPatternsInText(text, patterns[0])
+	matches := utils.FindAllPatternsInText(text, patterns[0])
 	if len(matches) == 0 {
 		return "", fmt.Errorf("pattern not found in text: %s", patterns[0])
 	}
 
 	if len(patterns) == 1 {
-		highestVersion := extractIdentifier(matches[0], app.Identifier.Pattern)
+		highestVersion := utils.ExtractIdentifier(matches[0], app.Identifier.Pattern)
 		if highestVersion == "" {
 			return "", fmt.Errorf("identifier not found in match: %s", matches[0])
 		}
 		highestMatch := matches[0]
 
 		for _, match := range matches[1:] {
-			version := extractIdentifier(match, app.Identifier.Pattern)
+			version := utils.ExtractIdentifier(match, app.Identifier.Pattern)
 			if version == "" {
 				continue
 			}

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -26,6 +27,23 @@ func CompareVersions(version1, version2 string) (int, error) {
 		return 0, err
 	}
 	return compareVersions(v1, v2), nil
+}
+
+func FindAllPatternsInText(text string, pattern string) []string {
+	re := regexp.MustCompile(pattern)
+	matches := re.FindAllString(text, -1)
+	return matches
+}
+
+func ExtractIdentifier(url, pattern string) string {
+	matches := regexp.MustCompile(pattern).FindStringSubmatch(url)
+	if len(matches) > 1 {
+		return matches[1]
+	}
+	if len(matches) > 0 {
+		return matches[0]
+	}
+	return ""
 }
 
 func parseVersion(version string) ([]int, error) {
