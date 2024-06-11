@@ -2,6 +2,13 @@
 
 This is a helper template for [Obtainium](https://github.com/ImranR98/Obtainium). To sum this project up, it is used to get the APK(s) that is(are) not possible for the built-in functionality of Obtainium to get.
 
+Ignore the files in releases. Those are for testing and personal use.
+
+## How to use
+
+Fork the repo as per the directions below.
+Make sure to leave a star if you like this project!
+
 ## How to setup the settings.json file
 
 -   `to_download` - This is the list of APKs that you want to download. You can add as many as you want.
