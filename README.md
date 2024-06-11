@@ -1,57 +1,59 @@
 # Obtainium Helper
 
-This is a helper template for [Obtainium](https://github.com/ImranR98/Obtainium). To sum this project up, it is used to get the APK(s) that is(are) not possible for the built-in functionality of Obtainium to get.
+Obtainium Helper is a template for [Obtainium](https://github.com/ImranR98/Obtainium), designed to assist in downloading APKs that are beyond the reach of Obtainium's built-in functionality.
 
-Ignore the files in releases. Those are for testing and personal use.
+## How to Use
 
-## How to use
+1. **Fork the Repository:**
+   Follow the standard procedure to fork this repository to your own GitHub account.
+2. **Star the Project:**
+   If you find this project helpful, please consider leaving a star!
 
-Fork the repo as per the directions below.
-Make sure to leave a star if you like this project!
+## Setting Up the `settings.json` File
 
-## How to setup the settings.json file
+### Main Configuration
 
--   `to_download` - This is the list of APKs that you want to download. You can add as many as you want.
-    -   `APK` - This is the name of the APK that you want to download. Its not required that you have the same name as the APK.
-        -   `name` - This is the name of the APK file. It will be auto added when the APK is downloaded.
-        -   `type` - This is how the APK will be located. It can be either `enumeration`, `web`, or `artifact` (github artifact).
-        -   `identifier` - This is a list of things to identify the APK with.
-            -   `latest` - This is the latest identifier of the APK.
-            -   `enum_limit` - This is the enumeration limit. This is only used for `enumeration`.
-            -   `increment_limit` - This is the increment limit. This is only used for `enumeration`.
-            -   `pattern` - This is the [regex pattern](https://en.wikipedia.org/wiki/Regular_expression) for grabbing the identifier. Keep in kind this parses the APK URL.
-        -   `url` - This is the URL to get the APK.
-        -   `agent` - This is the user agent to use when downloading the APK. (Optional)
-        -   `patterns` - This is a list of patterns to use to get the APK.
-        -   `url_encoded` - This is the encoding of the URL. (Optional)
--   `wait_time` - This is the time in seconds that the script will wait before re-checking for updates.
+-   **`to_download`**: A list of APKs you want to download. You can add as many as needed.
 
-### More details:
+    -   **`APK`**: The name of the APK to download. It doesn't have to match the actual APK name.
+        -   **`name`**: The name for the downloaded APK file.
+        -   **`type`**: The method to locate the APK. Options are `enumeration`, `web`, or `artifact` (GitHub artifact).
+        -   **`identifier`**: Information to identify the APK.
+            -   **`latest`**: The latest identifier of the APK.
+            -   **`enum_limit`**: Used only for `enumeration`. Sets the limit for enumeration.
+            -   **`increment_limit`**: Used only for `enumeration`. Sets the increment limit.
+            -   **`pattern`**: A [regex pattern](https://en.wikipedia.org/wiki/Regular_expression) for parsing the APK URL.
+        -   **`url`**: The URL to download the APK from.
+        -   **`agent`**: (Optional) The user agent to use when downloading the APK.
+        -   **`patterns`**: A list of patterns to locate the APK.
+        -   **`url_encoded`**: (Optional) Set to `true` if the URL is encoded.
 
-More info on some confusing parts of the settings.json file.
+-   **`wait_time`**: The interval (in seconds) the script will wait before re-checking for updates.
 
-#### Enumeration:
+### Detailed Explanations
 
-`enumeration` - so far only increments the version.\
-`enum_limit` - how many times it will be incremented. For example, if the latest version is 1.0 and the enum_limit is 500, it will increment to 1.500.\
-`increment_limit` - how much it will increment by. For example, if the latest version is 1.0 and the increment_limit is 999, it will increment to 1.999.
+#### Enumeration
 
-#### Web:
+-   **`enumeration`**: Increments the version.
+-   **`enum_limit`**: Maximum number of increments. E.g., if the latest version is 1.0 and `enum_limit` is 500, it will increment to 1.500.
+-   **`increment_limit`**: Increment step. E.g., if the latest version is 1.0 and `increment_limit` is 999, it will increment to 1.999.
 
-`patterns` - a list of patterns to use to get the APK. So if you set `url` to a direct APK link you don't need to add patterns. But if there is a website that contains a button or a link somewhere you can add a regex pattern to get the link. The reason why its an array is because if you need to get a link inside the link that the pattern before-hand got, you can add another pattern to get that link.
+#### Web
 
-#### Artifact:
+-   **`patterns`**: List of patterns to locate the APK. If `url` is a direct APK link, patterns aren't needed. If a website contains a button/link, add regex patterns to extract the link. Multiple patterns can be used to extract nested links.
 
-`url` - you should go to the workflow that its running and filter them by what branch you want, then use that link. Link example: `https://github.com/rebelonion/Dantotsu/actions/workflows/beta.yml?query=branch%3Adev`\
-`pattern` - you should just use this pattern for now: `\\/([a-zA-Z0-9]+)\\.zip` because there is now way to get the file version without downloading the whole thing, which would use API calls and would be slow.\
-`patterns` - the first pattern should be the name of the artifact thats in the action, the second pattern should be the name of the APK thats in the zip file.
+#### Artifact
 
-#### Other:
+-   **`url`**: Use the workflow URL filtered by branch. Example: `https://github.com/rebelonion/Dantotsu/actions/workflows/beta.yml?query=branch%3Adev`.
+-   **`pattern`**: Use `\\/([a-zA-Z0-9]+)\\.zip` to extract file names.
+-   **`patterns`**: First pattern is the artifact name in the action, the second is the APK name in the zip file.
 
-`url_encoded` is if the URL is encoded. For example, if the URL a bunch of weird symbols that start with `%` then you need to set this to `true`.\
-`agent` is the user agent to use when downloading the APK. This is optional and only needed if the website requires a user agent to download the APK.
+#### Other
 
-### Example:
+-   **`url_encoded`**: Set to `true` if the URL contains encoded characters (e.g., symbols starting with `%`).
+-   **`agent`**: Optional user agent for downloading the APK.
+
+### Example `settings.json`
 
 ```json
 {
