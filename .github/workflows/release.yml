@@ -7,16 +7,12 @@ env:
     APK_PATH: null
     RELEASE_ID: null
     TAG_NAME: null
-    START_TIME: null
 
 jobs:
     release:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Start Time
-              run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
-
             - name: Checkout Repository
               uses: actions/checkout@v4
 
@@ -106,10 +102,6 @@ jobs:
                   name: ${{ steps.apk-info.outputs.application-name }}
                   body: ${{ steps.apk-info.outputs.version-name }}
 
-            - name: Elapsed Time
-              run: |
-                  echo "(($(date +%s) - $START_TIME))" | bc > elapsed_time.txt
-
     rerun-workflow:
         name: Re-run workflow
         needs: release
@@ -121,8 +113,7 @@ jobs:
 
             - name: Wait for 5 minutes
               run: |
-                  $elapsed_time = $(cat elapsed_time.txt)
-                  sleep 300 - $elapsed_time
+                  sleep 300
 
             - name: Re-trigger workflow
               run: gh workflow run release.yml
