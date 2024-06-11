@@ -31,7 +31,7 @@ func checkForUpdate(settings utils.Settings, waitTime int) {
 
 		switch download.Type {
 		case "web":
-			fileURL, err = helpers.FetchURL(download.URL, download.Patterns, download.UrlEncoded, download.Agent)
+			fileURL, err = helpers.FetchURL(download.URL, download.Patterns, download)
 		case "enumeration":
 			ctx := context.Background()
 			fileURL, err = helpers.Enumerate(ctx, download)
