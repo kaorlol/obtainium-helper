@@ -74,7 +74,7 @@ Obtainium Helper is a template for [Obtainium](https://github.com/ImranR98/Obtai
 				"latest": "f0f2d2aba6b71f9649c29cb455b4953be0459fa879643ab4f988b56bc290c564",
 				"enum_limit": 0,
 				"increment_limit": 0,
-				"pattern": "\\/([a-zA-Z0-9]+)\\.zip"
+				"pattern": "/(\\w+-\\w+-\\w+-\\w+-\\w+)/"
 			},
 			"url": "https://github.com/rebelonion/Dantotsu/actions/workflows/beta.yml?query=branch%3Adev",
 			"agent": null,
