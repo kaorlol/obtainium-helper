@@ -40,7 +40,7 @@
 		"TikTok": {
 			"name": "35.1.3-universal.apk",
 			"type": "web",
-			"identifier": { "latest": "35.1.3", "enum_limit": 0, "increment_limit": 0, "pattern": "\\/(\\d+(?:\\.\\d+)+)" },
+			"identifier": { "latest": "35.1.2", "enum_limit": 0, "increment_limit": 0, "pattern": "\\/(\\d+(?:\\.\\d+)+)" },
 			"url": "https://store.kde.org/p/1515346/loadFiles",
 			"agent": null,
 			"patterns": ["https://files04\\.pling\\.com/api/files/download/j/[^/]+/\\d+(?:\\.\\d+)+-universal\\.apk"],
