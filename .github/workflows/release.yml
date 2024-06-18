@@ -4,10 +4,10 @@ on:
     workflow_dispatch:
 
 env:
-    APK_PATH: null
-    RELEASE_ID: null
-    TAG_NAME: null
-    WEBHOOK_ENABLED: false
+    APK_PATH: 'null'
+    RELEASE_ID: 'null'
+    TAG_NAME: 'null'
+    WEBHOOK_ENABLED: 'false'
     NOTIFY: ""
 
 jobs:
@@ -72,7 +72,7 @@ jobs:
                   echo "TAG_NAME=$(echo "$release_data" | jq -r '.tag_name')" >> $GITHUB_ENV
 
             - name: Delete Existing Release
-              if: env.RELEASE_ID != null && env.TAG_NAME != null
+              if: env.RELEASE_ID != 'null' && env.TAG_NAME != 'null'
               run: |
                   echo "Deleting release ${{ env.RELEASE_ID }} with tag ${{ env.TAG_NAME }}"
 
@@ -107,7 +107,7 @@ jobs:
                   body: ${{ steps.apk-info.outputs.version-name }}
 
             - name: Send Webhook
-              if: env.WEBHOOK_ENABLED == true
+              if: env.WEBHOOK_ENABLED == 'true'
               uses: EDUJOS/ds-webhook@v1.0.25
               with:
                   webhook_url: ${{ secrets.WEBHOOK }}
