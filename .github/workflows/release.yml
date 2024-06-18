@@ -4,10 +4,10 @@ on:
     workflow_dispatch:
 
 env:
-    APK_PATH: 'null'
-    RELEASE_ID: 'null'
-    TAG_NAME: 'null'
-    WEBHOOK_ENABLED: 'false'
+    APK_PATH: "null"
+    RELEASE_ID: "null"
+    TAG_NAME: "null"
+    WEBHOOK_ENABLED: "false"
     NOTIFY: ""
 
 jobs:
@@ -108,11 +108,10 @@ jobs:
 
             - name: Send Webhook
               if: env.WEBHOOK_ENABLED == 'true'
-              uses: EDUJOS/ds-webhook@v1.0.25
+              uses: hugoalh/send-discord-webhook-ghaction@v6.0.2
               with:
-                  webhook_url: ${{ secrets.WEBHOOK }}
-                  title: ${{ steps.apk-info.outputs.application-name }}
-                  description: Updated from ${{ steps.apk-info.outputs.version-name }} to ${{ steps.apk-info.outputs.version-name }}\n||${{ env.NOTIFY }}||
+                  key: ${{ secrets.WEBHOOK }}
+                  content: Updated ${{ steps.apk-info.outputs.application-name }} from ${{ steps.apk-info.outputs.version-name }} to ${{ steps.apk-info.outputs.version-name }}\n||${{ env.NOTIFY }}||
 
     rerun-workflow:
         name: Re-run workflow
