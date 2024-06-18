@@ -9,6 +9,12 @@ import (
 type Settings struct {
 	ToDownload map[string]Download `json:"to_download"`
 	WaitTime   int                 `json:"wait_time"`
+	Webhook    Webhook             `json:"webhook"`
+}
+
+type Webhook struct {
+	Enabled bool   `json:"enabled"`
+	Notify  string `json:"notify"`
 }
 
 type Download struct {

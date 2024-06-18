@@ -29,6 +29,9 @@ Obtainium Helper is a template for [Obtainium](https://github.com/ImranR98/Obtai
         -   **`url_encoded`**: (Optional) Set to `true` if the URL is encoded.
 
 -   **`wait_time`**: The interval (in seconds) the script will wait before re-checking for updates.
+-   **`webhook`**: Configuration for Discord webhook notifications.
+    -   **`enabled`**: Set to `true` to enable webhook notifications.
+    -   **`notify`**: Extra text to put in the message, can also be used to notify a role, person, etc.
 
 ### Detailed Explanations
 
@@ -100,6 +103,10 @@ Obtainium Helper is a template for [Obtainium](https://github.com/ImranR98/Obtai
 			"url_encoded": false
 		}
 	},
-	"wait_time": 15
+	"wait_time": 15,
+	"webhook": {
+		"enabled": true,
+		"notify": "<@901597854274052106>"
+	}
 }
 ```

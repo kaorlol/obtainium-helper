@@ -7,6 +7,8 @@ env:
     APK_PATH: null
     RELEASE_ID: null
     TAG_NAME: null
+    WEBHOOK_ENABLED: false
+    NOTIFY: ""
 
 jobs:
     release:
@@ -43,6 +45,8 @@ jobs:
             - name: Set Environment Variables
               run: |
                   echo "APK_PATH=$(ls -S out/*.apk | head -n 1)" >> $GITHUB_ENV
+                  echo "WEBHOOK_ENABLED=$(jq -r '.webhook.enabled' settings.json)" >> $GITHUB_ENV
+                  echo "NOTIFY=$(jq -r '.webhook.notify' settings.json)" >> $GITHUB_ENV
                   if [[ "${{ steps.run-main.outcome }}" != "success" ]]; then
                       exit 1
                   fi
@@ -101,6 +105,14 @@ jobs:
                   tag_name: ${{ steps.apk-info.outputs.version-name }}
                   name: ${{ steps.apk-info.outputs.application-name }}
                   body: ${{ steps.apk-info.outputs.version-name }}
+
+            - name: Send Webhook
+              if: env.WEBHOOK_ENABLED == true
+              uses: EDUJOS/ds-webhook@v1.0.25
+              with:
+                  webhook_url: ${{ secrets.WEBHOOK }}
+                  title: ${{ steps.apk-info.outputs.application-name }}
+                  description: Updated from ${{ steps.apk-info.outputs.version-name }} to ${{ steps.apk-info.outputs.version-name }}\n||${{ env.NOTIFY }}||
 
     rerun-workflow:
         name: Re-run workflow
