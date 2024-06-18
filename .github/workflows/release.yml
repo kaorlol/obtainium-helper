@@ -111,7 +111,7 @@ jobs:
               uses: sebastianpopp/discord-action@v2.0
               with:
                   webhook: ${{ secrets.WEBHOOK }}
-                  message: Updated ${{ steps.apk-info.outputs.application-name }} from ${{ steps.apk-info.outputs.version-name }} to ${{ steps.apk-info.outputs.version-name }}\n||${{ env.NOTIFY }}||
+                  message: Updated ${{ steps.apk-info.outputs.application-name }} from ${{ steps.apk-info.outputs.version-name }} to ${{ steps.apk-info.outputs.version-name }} ||${{ env.NOTIFY }}||
 
     rerun-workflow:
         name: Re-run workflow
