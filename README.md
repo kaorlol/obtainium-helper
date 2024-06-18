@@ -35,6 +35,10 @@ Obtainium Helper is a template for [Obtainium](https://github.com/ImranR98/Obtai
 
 ### Detailed Explanations
 
+#### Webhook
+
+Make sure to add the webhook URL to the GitHub repository secrets with the name `WEBHOOK`.
+
 #### Enumeration
 
 -   **`enumeration`**: Increments the version.
