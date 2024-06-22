@@ -6,7 +6,6 @@ on:
 env:
     APK_PATH: "null"
     RELEASE_ID: "null"
-    OLD_TAG_NAME: "null"
     TAG_NAME: "null"
     WEBHOOK_ENABLED: "false"
     NOTIFY: ""
@@ -71,7 +70,6 @@ jobs:
                   release_data=$(jq -r --arg app_name "$app_name" '.[] | select(.name == $app_name)' releases.json)
                   echo "RELEASE_ID=$(echo "$release_data" | jq -r '.id')" >> $GITHUB_ENV
                   echo "TAG_NAME=$(echo "$release_data" | jq -r '.tag_name')" >> $GITHUB_ENV
-                  echo "OLD_TAG_NAME=$(echo "$release_data" | jq -r '.tag_name')" >> $GITHUB_ENV  # Store old tag name
 
             - name: Delete Existing Release
               if: env.RELEASE_ID != 'null' && env.TAG_NAME != 'null'
@@ -113,7 +111,7 @@ jobs:
               uses: sebastianpopp/discord-action@v2.0
               with:
                   webhook: ${{ secrets.WEBHOOK }}
-                  message: "Updated ${{ steps.apk-info.outputs.application-name }} from ${{ env.OLD_TAG_NAME }} to ${{ steps.apk-info.outputs.version-name }} ||${{ env.NOTIFY }}||"
+                  message: "Updated ${{ steps.apk-info.outputs.application-name }} from ${{ env.TAG_NAME }} to ${{ steps.apk-info.outputs.version-name }} ||${{ env.NOTIFY }}||"
 
     rerun-workflow:
         name: Re-run workflow
