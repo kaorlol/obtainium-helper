@@ -86,6 +86,7 @@ func Enumerate(ctx context.Context, app utils.Download) (string, error) {
 					if err != nil {
 						continue
 					}
+
 					if resp.StatusCode == http.StatusOK {
 						results <- newIdentifier
 						cancel()
