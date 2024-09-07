@@ -52,7 +52,7 @@
 			"identifier": { "latest": "1.48", "enum_limit": 0, "increment_limit": 0, "pattern": "\\d+(?:\\.\\d+)+" },
 			"url": "https://tiktokmodcloud.com/ttplugin.html",
 			"agent": null,
-			"patterns": ["<a.*href=\"(.*)\"", "data-source_url=\"(.*\\.apk)\""],
+			"patterns": ["https://oxy\\.st/d/[a-zA-Z]+\\", "https://loader\\.oxy\\.st/get/.*\\.apk"],
 			"url_encoded": false
 		}
 	},
